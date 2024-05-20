@@ -3,6 +3,7 @@ const context = canvas.getContext("2d");
 const scoreText = document.getElementById("score");
 const levelText = document.getElementById("level");
 const canvContainer = document.querySelector(".canv-container");
+const enterContainer = document.querySelector(".entrance-container");
 const grid = 32;
 const tetrominoes = [
   [[1, 1, 1, 1]], // I
@@ -36,6 +37,12 @@ const tetrominoes = [
     [1, 1, 1],
     [0, 1],
   ],
+  [
+    [1, 0, 0],
+    [1, 1, 1],
+    [0, 0, 1],
+  ],
+  [[0, 0, 1], [1, 1, 1], [1]],
 ];
 
 const gameCharacteristics = [
@@ -61,9 +68,11 @@ const gameCharacteristics = [
   "Абсолютний Бог Гри",
 ];
 
+let leaderBoard = [];
+
 let speed = 1000;
 let speedLevel = 1;
-const speedUpThreshold = 10;
+const speedUpThreshold = 100;
 let gameOver = false;
 
 let board = [];
