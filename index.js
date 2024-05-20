@@ -42,7 +42,7 @@ const gameCharacteristics = [
   "Повна шляпа",
   "Невдалець",
   "Середнього рівня",
-  "Трохи кращий за середній рівень",
+  "Кращий за середній рівень",
   "Солідний гравець",
   "Досвідчений",
   "Майстер гри",
@@ -63,7 +63,7 @@ const gameCharacteristics = [
 
 let speed = 1000;
 let speedLevel = 1;
-const speedUpThreshold = 100;
+const speedUpThreshold = 10;
 let gameOver = false;
 
 let board = [];
@@ -185,7 +185,7 @@ function clearLines() {
   }
 
   if (linesCleared > 0) {
-    const scoreMultipliers = [0, 10, 30, 60, 100];
+    const scoreMultipliers = [0, 10, 30, 50, 80];
     score += scoreMultipliers[linesCleared];
     scoreText.innerText = score;
     if (score >= speedUpThreshold * speedLevel) {
@@ -193,6 +193,7 @@ function clearLines() {
       speed = speed -= 50;
       levelText.innerText = speedLevel;
       canvContainer.style.backgroundColor = getRandomColor();
+      // generateFilledCells();
     }
   }
 }
@@ -231,6 +232,28 @@ function rotateTetromino() {
   }
   currentTetromino.shape = rotatedShape;
   drawBoard();
+}
+
+// function generateFilledCells() {
+//   const numFilledCells = 3 + speedLevel;
+//   // const maxRow = Math.floor((rows * 2) / 3) - 1;
+//   clearBoard();
+
+//   for (let i = 0; i < numFilledCells; i++) {
+//     const randomRow = Math.floor(Math.random() * rows);
+//     const randomCol = Math.floor(Math.random() * cols);
+//     board[randomRow][randomCol] = 1;
+//   }
+
+//   drawBoard();
+// }
+
+function clearBoard() {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      board[row][col] = 0;
+    }
+  }
 }
 
 document.addEventListener("keydown", (event) => {
