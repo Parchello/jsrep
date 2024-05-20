@@ -28,7 +28,7 @@ const tetrominoes = [
   ], // O
   [
     [1, 1, 1, 1],
-    [0, 1, 1, 0],
+    [0, 1, 1],
   ],
 ];
 
@@ -62,7 +62,7 @@ function drawBoard() {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       if (board[row][col]) {
-        context.fillStyle = "cyan";
+        context.fillStyle = "green";
         context.fillRect(col * grid, row * grid, grid - 1, grid - 1);
       }
     }
@@ -76,7 +76,7 @@ function drawTetromino() {
       if (value) {
         let x = currentTetromino.x + colIndex;
         let y = currentTetromino.y + rowIndex;
-        context.fillStyle = "red";
+        context.fillStyle = "orange";
         context.fillRect(x * grid, y * grid, grid - 1, grid - 1);
       }
     });
@@ -148,13 +148,12 @@ function clearLines() {
   }
 
   if (linesCleared > 0) {
-    // Множники для різної кількості очищених ліній
     const scoreMultipliers = [0, 10, 30, 60, 100];
     score += scoreMultipliers[linesCleared];
     scoreText.innerText = score;
     if (score >= speedUpThreshold * speedLevel) {
       speedLevel++;
-      speed = Math.max(100, speed - 100);
+      speed = speed -= 50;
       level += 1;
       levelText.innerText = level;
     }
