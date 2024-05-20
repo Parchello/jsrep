@@ -31,20 +31,47 @@ const tetrominoes = [
     [1, 1, 1, 1],
     [0, 1, 1],
   ],
+  [
+    [0, 1],
+    [1, 1, 1],
+    [0, 1],
+  ],
+];
+
+const gameCharacteristics = [
+  "Повна шляпа",
+  "Невдалець",
+  "Середнього рівня",
+  "Трохи кращий за середній рівень",
+  "Солідний гравець",
+  "Досвідчений",
+  "Майстер гри",
+  "Кращий серед найкращих",
+  "Винахідник стратегій",
+  "Елітний гравець",
+  "Майстер стратегії",
+  "Геній гри",
+  "Легенда гри",
+  "Віртуоз гри",
+  "Неодолимий",
+  "Непереможний",
+  "Владар гри",
+  "Імператор гри",
+  "Божество гри",
+  "Абсолютний Бог Гри",
 ];
 
 let speed = 1000;
 let speedLevel = 1;
-const speedUpThreshold = 10;
+const speedUpThreshold = 100;
 let gameOver = false;
 
 let board = [];
 const rows = 20;
 const cols = 10;
 let score = 0;
-let level = 1;
 scoreText.innerText = score;
-levelText.innerText = level;
+levelText.innerText = speedLevel;
 for (let row = 0; row < rows; row++) {
   board[row] = [];
   for (let col = 0; col < cols; col++) {
@@ -164,8 +191,7 @@ function clearLines() {
     if (score >= speedUpThreshold * speedLevel) {
       speedLevel++;
       speed = speed -= 50;
-      level += 1;
-      levelText.innerText = level;
+      levelText.innerText = speedLevel;
       canvContainer.style.backgroundColor = getRandomColor();
     }
   }
@@ -214,9 +240,45 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowUp") rotateTetromino();
 });
 
+let endGameDisplayed = false;
+
 function endGame() {
   gameOver = true;
-  alert("Game Over! Your score: " + score + "\nYour level: " + level);
+  clearCanvas();
+  drawEndGameMessage();
+}
+
+function clearCanvas() {
+  const canvas = document.getElementById("gameCanvas");
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawEndGameMessage() {
+  const canvas = document.getElementById("gameCanvas");
+  const context = canvas.getContext("2d");
+
+  context.fillStyle = "black";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  context.font = "30px Arial";
+  context.fillStyle = "white";
+  context.textAlign = "center";
+
+  const message =
+    "Гру закінчено!\n Ваш рахунок: " +
+    score +
+    "\nВаш рівень: " +
+    speedLevel +
+    "\n" +
+    gameCharacteristics[speedLevel - 1];
+
+  const lines = message.split("\n");
+  const lineHeight = 30;
+  const startY = (canvas.height - lines.length * lineHeight) / 2;
+  lines.forEach((line, index) => {
+    context.fillText(line, canvas.width / 2, startY + index * lineHeight);
+  });
 }
 
 function gameLoop() {
