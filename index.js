@@ -2,6 +2,7 @@ const canvas = document.getElementById("gameCanvas");
 const context = canvas.getContext("2d");
 const scoreText = document.getElementById("score");
 const levelText = document.getElementById("level");
+const canvContainer = document.querySelector(".canv-container");
 const grid = 32;
 const tetrominoes = [
   [[1, 1, 1, 1]], // I
@@ -62,7 +63,7 @@ function drawBoard() {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       if (board[row][col]) {
-        context.fillStyle = "green";
+        context.fillStyle = "blue";
         context.fillRect(col * grid, row * grid, grid - 1, grid - 1);
       }
     }
@@ -135,6 +136,15 @@ function freezeTetromino() {
   });
 }
 
+function getRandomColor() {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
 function clearLines() {
   let linesCleared = 0;
 
@@ -156,6 +166,7 @@ function clearLines() {
       speed = speed -= 50;
       level += 1;
       levelText.innerText = level;
+      canvContainer.style.backgroundColor = getRandomColor();
     }
   }
 }
@@ -205,7 +216,7 @@ document.addEventListener("keydown", (event) => {
 
 function endGame() {
   gameOver = true;
-  alert("Game Over! Your score: " + score);
+  alert("Game Over! Your score: " + score + "\nYour level: " + level);
 }
 
 function gameLoop() {
