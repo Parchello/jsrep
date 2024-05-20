@@ -1,6 +1,7 @@
 const canvas = document.getElementById("gameCanvas");
 const context = canvas.getContext("2d");
 const scoreText = document.getElementById("score");
+const levelText = document.getElementById("level");
 const grid = 32;
 const tetrominoes = [
   [[1, 1, 1, 1]], // I
@@ -25,14 +26,24 @@ const tetrominoes = [
     [1, 1],
     [1, 1],
   ], // O
+  [
+    [1, 1, 1, 1],
+    [0, 1, 1, 0],
+  ],
 ];
+
+let speed = 1000;
+let speedLevel = 1;
+const speedUpThreshold = 10;
+let gameOver = false;
 
 let board = [];
 const rows = 20;
 const cols = 10;
 let score = 0;
+let level = 1;
 scoreText.innerText = score;
-
+levelText.innerText = level;
 for (let row = 0; row < rows; row++) {
   board[row] = [];
   for (let col = 0; col < cols; col++) {
@@ -80,6 +91,10 @@ function moveTetromino(dx, dy) {
   } else if (dy === 1) {
     freezeTetromino();
     clearLines();
+    if (currentTetromino.y === 0) {
+      endGame();
+      return;
+    }
     resetTetromino();
     drawBoard();
   }
@@ -121,13 +136,27 @@ function freezeTetromino() {
 }
 
 function clearLines() {
+  let linesCleared = 0;
+
   for (let row = rows - 1; row >= 0; row--) {
     if (board[row].every((cell) => cell)) {
       board.splice(row, 1);
       board.unshift(new Array(cols).fill(0));
+      linesCleared++;
       row++;
-      score += 10;
-      scoreText.innerText = score;
+    }
+  }
+
+  if (linesCleared > 0) {
+    // Множники для різної кількості очищених ліній
+    const scoreMultipliers = [0, 10, 30, 60, 100];
+    score += scoreMultipliers[linesCleared];
+    scoreText.innerText = score;
+    if (score >= speedUpThreshold * speedLevel) {
+      speedLevel++;
+      speed = Math.max(100, speed - 100);
+      level += 1;
+      levelText.innerText = level;
     }
   }
 }
@@ -175,9 +204,16 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowUp") rotateTetromino();
 });
 
+function endGame() {
+  gameOver = true;
+  alert("Game Over! Your score: " + score);
+}
+
 function gameLoop() {
-  moveTetromino(0, 1);
-  setTimeout(gameLoop, 1000);
+  if (!gameOver) {
+    moveTetromino(0, 1);
+    setTimeout(gameLoop, speed);
+  }
 }
 
 drawBoard();
