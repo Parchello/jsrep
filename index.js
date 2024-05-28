@@ -76,6 +76,7 @@ let speed = 1000;
 let speedLevel = 1;
 const speedUpThreshold = 100;
 let gameOver = false;
+let gamePaused = false; // Додаємо змінну для паузи
 
 let board = [];
 const rows = 20;
@@ -272,6 +273,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowRight") moveTetromino(1, 0);
   if (event.key === "ArrowDown") moveTetromino(0, 1);
   if (event.key === "ArrowUp") rotateTetromino();
+  if (event.key === " ") togglePause(); // Додаємо обробник для пробілу
 });
 
 let endGameDisplayed = false;
@@ -315,8 +317,15 @@ function drawEndGameMessage() {
   });
 }
 
+function togglePause() {
+  gamePaused = !gamePaused;
+  if (!gamePaused) {
+    gameLoop();
+  }
+}
+
 function gameLoop() {
-  if (!gameOver) {
+  if (!gameOver && !gamePaused) {
     moveTetromino(0, 1);
     setTimeout(gameLoop, speed);
   }
