@@ -70,6 +70,8 @@ const gameCharacteristics = [
 
 let leaderBoard = [];
 
+enterContainer.style.display = "none";
+
 let speed = 1000;
 let speedLevel = 1;
 const speedUpThreshold = 100;
