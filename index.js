@@ -319,6 +319,7 @@ function drawEndGameMessage() {
 
 function togglePause() {
   gamePaused = !gamePaused;
+  const canvas = document.getElementById("gameCanvas");
   if (!gamePaused) {
     gameLoop();
   }
