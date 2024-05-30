@@ -273,7 +273,7 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowRight") moveTetromino(1, 0);
   if (event.key === "ArrowDown") moveTetromino(0, 1);
   if (event.key === "ArrowUp") rotateTetromino();
-  if (event.key === " ") togglePause(); // Додаємо обробник для пробілу
+  if (event.key === " ") togglePause();
 });
 
 let endGameDisplayed = false;
