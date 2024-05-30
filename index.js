@@ -76,7 +76,7 @@ let speed = 1000;
 let speedLevel = 1;
 const speedUpThreshold = 100;
 let gameOver = false;
-let gamePaused = false; // Додаємо змінну для паузи
+let gamePaused = false;
 
 let board = [];
 const rows = 20;
